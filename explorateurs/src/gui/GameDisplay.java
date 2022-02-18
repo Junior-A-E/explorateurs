@@ -47,6 +47,11 @@ public class GameDisplay extends JPanel{
 			g.setColor(Color.BLACK);
 			g.drawLine(Intersection.getAbscisse(), Intersection.getOrdonnee(), IntersectionEnd.getAbscisse(), IntersectionEnd.getOrdonnee());
 		}
+		int start = GameConfiguration.Abscisse_Start / 2;
+		int end = GameConfiguration.Ordonnee_Start / 2;
+		int distance = (GameConfiguration.BLOCK_SIZE * (GameConfiguration.ABSCISSE_COUNT)) + GameConfiguration.Abscisse_Start;
+		
+		g.drawImage(GameUtility.readImage("src/images/fond.jpg"),start,end,distance+start,distance+end,null);
 	}
 	
 	public void printAnimals(Graphics g) {
