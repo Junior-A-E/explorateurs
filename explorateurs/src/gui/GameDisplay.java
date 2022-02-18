@@ -6,6 +6,8 @@ import javax.swing.JPanel;
 
 import configuration.GameConfiguration;
 import element.Animal;
+import element.Mountain;
+import element.Treasure;
 import map.Intersection;
 import map.Map;
 import process.GameUtility;
@@ -27,6 +29,8 @@ public class GameDisplay extends JPanel{
 		super.paintComponent(g);
 		paint(map, g);
 		printAnimals(g);
+		printMountains(g);
+		printTreasures(g);
 	}
 	
 	public void paint(Map map, Graphics g) {
@@ -45,11 +49,25 @@ public class GameDisplay extends JPanel{
 		}
 	}
 	
-	public void printAnimals(Graphics g2) {
+	public void printAnimals(Graphics g) {
 		for(Animal animal : simulation.getAnimals()) {
 			Intersection position = animal.getPosition();
-			g2.drawImage(GameUtility.readImage("src/images/animal.png"),position.getAbscisse(),position.getOrdonnee(),GameConfiguration.BLOCK_SIZE,GameConfiguration.BLOCK_SIZE,null);
+			g.drawImage(GameUtility.readImage("src/images/animal.png"),position.getAbscisse(),position.getOrdonnee(),GameConfiguration.BLOCK_SIZE,GameConfiguration.BLOCK_SIZE,null);
 		}
-		
 	}
+	
+	public void printTreasures(Graphics g) {
+		for(Treasure treasure : simulation.getTreasures()) {
+			Intersection position = treasure.getPosition();
+			g.drawImage(GameUtility.readImage("src/images/treasure.png"),position.getAbscisse(),position.getOrdonnee(),GameConfiguration.BLOCK_SIZE,GameConfiguration.BLOCK_SIZE,null);
+		}
+	}
+	
+	public void printMountains(Graphics g) {
+		for(Mountain moutain : simulation.getMountains()) {
+			Intersection position = moutain.getPosition();
+			g.drawImage(GameUtility.readImage("src/images/mountain.png"),position.getAbscisse(),position.getOrdonnee(),GameConfiguration.BLOCK_SIZE,GameConfiguration.BLOCK_SIZE,null);
+		}
+	}
+
 }

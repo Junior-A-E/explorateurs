@@ -10,8 +10,8 @@ public class GameConfiguration {
 	public static final int ABSCISSE_COUNT = 17;
 	public static final int ORDONNEE_COUNT = 17;
 	
-	public static final int Abscisse_Start = 50;
-	public static final int Ordonnee_Start = 50;
+	public static final int Abscisse_Start = 20;
+	public static final int Ordonnee_Start = 20;
 	public static final long GAME_SPEED = 1000;
 	
 	

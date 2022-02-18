@@ -1,12 +1,6 @@
 package map;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import configuration.GameConfiguration;
-import element.Animal;
-import element.Mountain;
-import element.Treasure;
 
 
 public class Map {
@@ -21,11 +15,6 @@ public class Map {
 	private int abscisseCount;
 	private int ordonneeCount;
 	
-	//private List<Grass> grass = new ArrayList<Grass>();
-	private List<Treasure> treasures = new ArrayList<Treasure>();
-	private List<Mountain> mountains = new ArrayList<Mountain>();
-	private List<Animal> animals = new ArrayList<Animal>();
-	
 	public Map(int abscisseCount , int ordonneeCount) {
 		intersections = new Intersection[abscisseCount][ordonneeCount];
 		this.abscisseCount = abscisseCount;
@@ -39,10 +28,6 @@ public class Map {
 			OrdonneeStart = GameConfiguration.Ordonnee_Start;
 			AbscisseStart += GameConfiguration.BLOCK_SIZE;
 		}
-		//initAnimals();
-		//initGrass();
-		//initMountains();
-		//initTreasures();
 	}
 	
 	public int getAbscisseCount() {
@@ -89,54 +74,6 @@ public class Map {
 		return intersections[abscisse][ordonnee];
 	}
 
-	/*public List<Grass> initGrass() {
-		for(int abscisseIndex = 0; abscisseIndex < GameConfiguration.ABSCISSE_COUNT-1; abscisseIndex++) {
-			for (int ordonneeIndex = 0; ordonneeIndex < GameConfiguration.ORDONNEE_COUNT-1; ordonneeIndex++) {
-				Grass gras = new Grass(intersections[abscisseIndex][ordonneeIndex]);
-				grass.add(gras);
-				OrdonneeStart += GameConfiguration.BLOCK_SIZE;
-			}
-			OrdonneeStart = 100;
-			AbscisseStart += GameConfiguration.BLOCK_SIZE;
-		}
-		return grass;
-	}*/
-
-	public List<Treasure> initTreasures() {
-		int numberOfTreasures = getRandomNumber(1,5);
-		for(int i = 0; i < numberOfTreasures; i++) {
-			Intersection position = intersections[getRandomNumber(0,GameConfiguration.ABSCISSE_COUNT-2)][getRandomNumber(0,GameConfiguration.ORDONNEE_COUNT-2)];
-			Treasure treasure = new Treasure(position);
-			treasures.add(treasure);
-		}
-		return treasures;
-	}
-
-	public List<Mountain> initMountains() {
-		int numberOfMountains = getRandomNumber(5,8);
-		for(int i = 0; i < numberOfMountains; i++) {
-			Intersection position = intersections[getRandomNumber(0,GameConfiguration.ABSCISSE_COUNT-2)][getRandomNumber(0,GameConfiguration.ORDONNEE_COUNT-2)];
-			Mountain mountain = new Mountain(position);
-			mountains.add(mountain);
-		}
-		return mountains;
-	}
-
-	public List<Animal> initAnimals() {
-		int numberOfAnimals = getRandomNumber(5,8);
-		for(int i = 0; i < numberOfAnimals; i++) {
-			Intersection position = intersections[getRandomNumber(0,GameConfiguration.ABSCISSE_COUNT-2)][getRandomNumber(0,GameConfiguration.ORDONNEE_COUNT-2)];
-			Animal animal = new Animal(position);
-			animals.add(animal);
-		}
-		System.out.println(animals);
-		return animals;
-	}
-	
-	private static int getRandomNumber(int min, int max) {
-		return (int) (Math.random() * (max + 1 - min)) + min;
-	}
-	
 	public Intersection getElementPosition(int x , int y) {
 		int abscisse = (x-GameConfiguration.Abscisse_Start)/ GameConfiguration.BLOCK_SIZE;
 		int ordonnee = (y-GameConfiguration.Ordonnee_Start)/ GameConfiguration.BLOCK_SIZE;

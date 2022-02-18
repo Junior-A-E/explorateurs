@@ -10,8 +10,6 @@ import javax.swing.JPanel;
 
 import configuration.GameConfiguration;
 import map.Map;
-import process.AnimalManager;
-import process.GameBuilder;
 import process.Simulation;
 
 
