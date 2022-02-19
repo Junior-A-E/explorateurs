@@ -11,7 +11,7 @@ import map.Map;
 
 public class Simulation {
 	private Map map;
-	
+	private volatile ArrayList<Intersection> occupied = new ArrayList<Intersection>();
 	private volatile ArrayList<Explorer> explorers = new ArrayList<Explorer>();
 	private volatile ArrayList<Animal> animals = new ArrayList<Animal>();
 	private volatile ArrayList<Treasure> treasures = new ArrayList<Treasure>();
@@ -71,14 +71,15 @@ public class Simulation {
 		
 		int numberOfExplorers = GameUtility.getRandomNumber(3,5);
 		for(int i = 0; i < numberOfExplorers; i++) {
-			Intersection position = intersections[0][0];
-			do {
-				position = intersections[GameUtility.getRandomNumber(8,10)][GameUtility.getRandomNumber(8,10)];
-			}while(map.isOccupied(position));
+			//Intersection position = intersections[0][0];
+			//do {
+			Intersection position = intersections[GameConfiguration.ABSCISSE_COUNT/2][GameConfiguration.ORDONNEE_COUNT/2];
+			//}while(isOccupied(position));
 			Explorer explorer = new Explorer(position);
 			explorers.add(explorer);
 			explorersStartIntersection.add(position);
 		}
+		System.out.println(explorersStartIntersection);
 	
 		int numberOfTreasures = GameUtility.getRandomNumber(explorers.size(),(explorers.size()*2)-1);
 		for(int i = 0; i < numberOfTreasures; i++) {
@@ -91,13 +92,13 @@ public class Simulation {
 			treasuresIntersection.add(position);
 		}
 
-		int numberOfChainMountains = GameUtility.getRandomNumber(4,8);
+		int numberOfChainMountains = GameUtility.getRandomNumber(6,8);
 		for(int i = 0; i < numberOfChainMountains; i++) {
 			int numberOfMountains = GameUtility.getRandomNumber(1,3);
 			Intersection position = intersections[0][0];
 			do {
 				position = intersections[GameUtility.getRandomNumber(0,GameConfiguration.ABSCISSE_COUNT-2)][GameUtility.getRandomNumber(0,GameConfiguration.ORDONNEE_COUNT-2)];
-			}while(initialPositionCheck(position));
+			}while(initialPositionCheck(position) || isForbiddenForAnimals(position));
 			Mountain mountain = new Mountain(position);
 			mountains.add(mountain);
 			mountainsIntersection.add(position);/*
@@ -137,6 +138,13 @@ public class Simulation {
 		return exist == 1;
 	}
 	
+	public boolean isOccupied(Intersection find) {
+		occupied.addAll(explorersStartIntersection);
+		occupied.addAll(treasuresIntersection);
+		occupied.addAll(mountainsIntersection);
+		return belongTo(find, occupied);
+	}
+	
 	public boolean isForbiddenForAnimals(Intersection find) {
 		forbiddenForAnimals.addAll(explorersStartIntersection);
 		forbiddenForAnimals.addAll(treasuresIntersection);
@@ -152,6 +160,7 @@ public class Simulation {
 	
 	public boolean isForbiddenForExplorers(Intersection find) {
 		forbiddenForExplorers.addAll(mountainsIntersection);
+		forbiddenForExplorers.addAll(explorersStartIntersection);
 		return belongTo(find, forbiddenForExplorers);
 	}
 	
@@ -170,7 +179,7 @@ public class Simulation {
 	}
 	
 	public boolean initialPositionCheck(Intersection position) {
-		return map.isOccupied(position) || isExplorerStart(position) || isInStartZone(position);
+		return isOccupied(position) || isExplorerStart(position) || isInStartZone(position);
 	}
 		
 }

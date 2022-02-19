@@ -9,7 +9,6 @@ import process.GameUtility;
 public class Map {
 	
 	private Intersection[][] intersections;
-	private volatile ArrayList<Intersection> occupied = new ArrayList<Intersection>();
 
 	private int AbscisseStart = GameConfiguration.Abscisse_Start;
 	private int OrdonneeStart = GameConfiguration.Ordonnee_Start;
@@ -130,15 +129,6 @@ public class Map {
         return x == distance && y >= GameConfiguration.Ordonnee_Start && y <= distance;
     }
     
-    public boolean isOccupied(Intersection find) {
-		int isOccupied = 0;
-		for(Intersection intersection : occupied) {
-			if(intersection.equals(find)) {
-				isOccupied = 1;
-			}
-		}
-		return isOccupied == 1;
-	}
  /*   
     public Intersection getFreeNeighbour(Intersection intersection) {
     	 ArrayList<Intersection> neighbours = new ArrayList<Intersection>();
