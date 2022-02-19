@@ -1,11 +1,15 @@
 package map;
 
+import java.util.ArrayList;
+
 import configuration.GameConfiguration;
+import process.GameUtility;
 
 
 public class Map {
 	
 	private Intersection[][] intersections;
+	private volatile ArrayList<Intersection> occupied = new ArrayList<Intersection>();
 
 	private int AbscisseStart = GameConfiguration.Abscisse_Start;
 	private int OrdonneeStart = GameConfiguration.Ordonnee_Start;
@@ -125,4 +129,70 @@ public class Map {
         int y = position.getOrdonnee();
         return x == distance && y >= GameConfiguration.Ordonnee_Start && y <= distance;
     }
+    
+    public boolean isOccupied(Intersection find) {
+		int isOccupied = 0;
+		for(Intersection intersection : occupied) {
+			if(intersection.equals(find)) {
+				isOccupied = 1;
+			}
+		}
+		return isOccupied == 1;
+	}
+ /*   
+    public Intersection getFreeNeighbour(Intersection intersection) {
+    	 ArrayList<Intersection> neighbours = new ArrayList<Intersection>();
+		int n = 0;
+		int x = intersection.getAbscisse();
+		int y = intersection.getOrdonnee();
+				
+		int xl = intersection.getAbscisse()-(GameConfiguration.BLOCK_SIZE);
+		int xr = intersection.getAbscisse()+(GameConfiguration.BLOCK_SIZE);
+				
+		int yu = intersection.getOrdonnee()-(GameConfiguration.BLOCK_SIZE);
+		int yd = intersection.getOrdonnee()+(GameConfiguration.BLOCK_SIZE);
+				
+		if(!isOnLeftBorder(intersection)) {
+			Intersection left = getElementPosition(xl, y);
+			if(!isOccupied(left)) {
+				neighbours.add(left);
+				n++;
+			}
+		}
+		
+		if(!isOnRightBorder(intersection)) {
+			Intersection right = getElementPosition(xr, y); 
+			if(!isOccupied(right)) {
+				neighbours.add(right);
+				n++;
+			}
+		}
+		
+		if(!isOnTopBorder(intersection)) {
+			Intersection up = getElementPosition(x, yu);
+			if(!isOccupied(up)) {
+				neighbours.add(up);
+				n++;
+			}
+		}
+		
+		if(!isOnBottomBorder(intersection)) {
+			Intersection down = getElementPosition(x, yd);
+			if(!isOccupied(down)) {
+				neighbours.add(down);
+				n++;
+			}
+		}	
+		Intersection keep = new Intersection(0,0);
+		int count = 0;
+		int sort = GameUtility.getRandomNumber(count, n);
+		for(Intersection i : neighbours) {
+			if(count == sort) {
+				keep = i;
+			}	
+			count ++;
+		}
+		return keep;
+		}
+*/
 }

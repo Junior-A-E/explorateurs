@@ -17,7 +17,7 @@ public class AnimalManager {
 
 	protected void moveAnimals() {
 		for (Animal animal : simulation.getAnimals() ) {
-			System.out.println(animal.getPosition().toString());
+			//System.out.println(animal.getPosition().toString());
 			Intersection position = animal.getPosition();
 			if(map.isOnLeftTop(position)) {
 				leftTopMove(position,animal);
@@ -50,137 +50,156 @@ public class AnimalManager {
 	}
 
 	private void normalMove(Animal animal, Intersection position) {
-		double percent = Math.random();
-		if(percent <= 0.25) {
-			Intersection newPosition = map.getElementPosition(position.getAbscisse(),position.getOrdonnee()+GameConfiguration.BLOCK_SIZE);
-			animal.setPosition(newPosition);
-		}
-		else if(percent > 0.25 && percent <= 0.50) {
-			Intersection newPosition = map.getElementPosition(position.getAbscisse(), position.getOrdonnee()-GameConfiguration.BLOCK_SIZE);
-			animal.setPosition(newPosition);
-		}
-		else if(percent > 0.50 && percent <= 0.75) {
-			Intersection newPosition = map.getElementPosition(position.getAbscisse()+GameConfiguration.BLOCK_SIZE, position.getOrdonnee());
-			animal.setPosition(newPosition);
-		}
-		else {
-			Intersection newPosition = map.getElementPosition(position.getAbscisse()-GameConfiguration.BLOCK_SIZE, position.getOrdonnee());
-			animal.setPosition(newPosition);
-		}
+		Intersection[][] intersections = map.getIntersections();
+		Intersection newPosition = intersections[0][0];
+		do {
+			double percent = Math.random();
+			if(percent <= 0.25) {
+				newPosition = map.getElementPosition(position.getAbscisse(),position.getOrdonnee()+GameConfiguration.BLOCK_SIZE);
+			}
+			else if(percent > 0.25 && percent <= 0.50) {
+				newPosition = map.getElementPosition(position.getAbscisse(), position.getOrdonnee()-GameConfiguration.BLOCK_SIZE);
+			}
+			else if(percent > 0.50 && percent <= 0.75) {
+				newPosition = map.getElementPosition(position.getAbscisse()+GameConfiguration.BLOCK_SIZE, position.getOrdonnee());
+			}
+			else {
+				newPosition = map.getElementPosition(position.getAbscisse()-GameConfiguration.BLOCK_SIZE, position.getOrdonnee());
+			}
+		}while(simulation.isForbiddenForAnimalsAfterDeparture(newPosition));
+		animal.setPosition(newPosition);
 	}
 
 	private void rightBorderMove(Animal animal, Intersection position) {
-		double percent = Math.random();
-		if(percent <= 0.33) {
-			Intersection newPosition = map.getElementPosition(position.getAbscisse(),position.getOrdonnee()+GameConfiguration.BLOCK_SIZE);
-			animal.setPosition(newPosition);
-		}
-		else if(percent > 0.33 && percent <= 0.66) {
-			Intersection newPosition = map.getElementPosition(position.getAbscisse(), position.getOrdonnee()-GameConfiguration.BLOCK_SIZE);
-			animal.setPosition(newPosition);
-		}
-		else if(percent > 0.67) {
-			Intersection newPosition = map.getElementPosition(position.getAbscisse()-GameConfiguration.BLOCK_SIZE, position.getOrdonnee());
-			animal.setPosition(newPosition);
-		}
-		
+		Intersection[][] intersections = map.getIntersections();
+		Intersection newPosition = intersections[0][0];
+		do {
+			double percent = Math.random();
+			if(percent <= 0.33) {
+				newPosition = map.getElementPosition(position.getAbscisse(),position.getOrdonnee()+GameConfiguration.BLOCK_SIZE);
+			}
+			else if(percent > 0.33 && percent <= 0.66) {
+				newPosition = map.getElementPosition(position.getAbscisse(), position.getOrdonnee()-GameConfiguration.BLOCK_SIZE);
+			}
+			else if(percent > 0.67) {
+				newPosition = map.getElementPosition(position.getAbscisse()-GameConfiguration.BLOCK_SIZE, position.getOrdonnee());
+			}
+		}while(simulation.isForbiddenForAnimalsAfterDeparture(newPosition));
+		animal.setPosition(newPosition);
 	}
 
 	private void leftBorderMove(Animal animal, Intersection position) {
-		double percent = Math.random();
-		if(percent <= 0.33) {
-			Intersection newPosition = map.getElementPosition(position.getAbscisse(),position.getOrdonnee()+GameConfiguration.BLOCK_SIZE);
-			animal.setPosition(newPosition);
-		}
-		else if(percent > 0.33 && percent <= 0.66) {
-			Intersection newPosition = map.getElementPosition(position.getAbscisse(), position.getOrdonnee()-GameConfiguration.BLOCK_SIZE);
-			animal.setPosition(newPosition);
-		}
-		else if(percent > 0.67) {
-			Intersection newPosition = map.getElementPosition(position.getAbscisse()+GameConfiguration.BLOCK_SIZE, position.getOrdonnee());
-			animal.setPosition(newPosition);
-		}
+		Intersection[][] intersections = map.getIntersections();
+		Intersection newPosition = intersections[0][0];
+		do {
+			double percent = Math.random();
+			if(percent <= 0.33) {
+				newPosition = map.getElementPosition(position.getAbscisse(),position.getOrdonnee()+GameConfiguration.BLOCK_SIZE);
+			}
+			else if(percent > 0.33 && percent <= 0.66) {
+				newPosition = map.getElementPosition(position.getAbscisse(), position.getOrdonnee()-GameConfiguration.BLOCK_SIZE);
+			}
+			else if(percent > 0.67) {
+				newPosition = map.getElementPosition(position.getAbscisse()+GameConfiguration.BLOCK_SIZE, position.getOrdonnee());
+			}
+		}while(simulation.isForbiddenForAnimalsAfterDeparture(newPosition));
+		animal.setPosition(newPosition);
 	}
 
 	private void bottomBorderMove(Animal animal, Intersection position) {
-		double percent = Math.random();
-		if(percent <= 0.33) {
-			Intersection newPosition = map.getElementPosition(position.getAbscisse()-GameConfiguration.BLOCK_SIZE,position.getOrdonnee());
-			animal.setPosition(newPosition);
-		}
-		else if(percent > 0.33 && percent <= 0.66) {
-			Intersection newPosition = map.getElementPosition(position.getAbscisse()+GameConfiguration.BLOCK_SIZE, position.getOrdonnee());
-			animal.setPosition(newPosition);
-		}
-		else if(percent > 0.67) {
-			Intersection newPosition = map.getElementPosition(position.getAbscisse(), position.getOrdonnee()-GameConfiguration.BLOCK_SIZE);
-			animal.setPosition(newPosition);
-		}
+		Intersection[][] intersections = map.getIntersections();
+		Intersection newPosition = intersections[0][0];
+		do {
+			double percent = Math.random();
+			if(percent <= 0.33) {
+				newPosition = map.getElementPosition(position.getAbscisse()-GameConfiguration.BLOCK_SIZE,position.getOrdonnee());
+			}
+			else if(percent > 0.33 && percent <= 0.66) {
+				newPosition = map.getElementPosition(position.getAbscisse()+GameConfiguration.BLOCK_SIZE, position.getOrdonnee());
+			}
+			else if(percent > 0.67) {
+				newPosition = map.getElementPosition(position.getAbscisse(), position.getOrdonnee()-GameConfiguration.BLOCK_SIZE);
+			}
+		}while(simulation.isForbiddenForAnimalsAfterDeparture(newPosition));
+		animal.setPosition(newPosition);
 	}
 
 	private void topBorderMove(Intersection position, Animal animal) {
-		double percent = Math.random();
-		if(percent <= 0.33) {
-			Intersection newPosition = map.getElementPosition(position.getAbscisse()-GameConfiguration.BLOCK_SIZE,position.getOrdonnee());
-			animal.setPosition(newPosition);
-		}
-		else if(percent > 0.33 && percent <= 0.66) {
-			Intersection newPosition = map.getElementPosition(position.getAbscisse()+GameConfiguration.BLOCK_SIZE, position.getOrdonnee());
-			animal.setPosition(newPosition);
-		}
-		else if(percent > 0.67) {
-			Intersection newPosition = map.getElementPosition(position.getAbscisse(), position.getOrdonnee()+GameConfiguration.BLOCK_SIZE);
-			animal.setPosition(newPosition);
-		}
+		Intersection[][] intersections = map.getIntersections();
+		Intersection newPosition = intersections[0][0];
+		do {
+			double percent = Math.random();
+			if(percent <= 0.33) {
+				newPosition = map.getElementPosition(position.getAbscisse()-GameConfiguration.BLOCK_SIZE,position.getOrdonnee());
+			}
+			else if(percent > 0.33 && percent <= 0.66) {
+				newPosition = map.getElementPosition(position.getAbscisse()+GameConfiguration.BLOCK_SIZE, position.getOrdonnee());
+			}
+			else if(percent > 0.67) {
+				newPosition = map.getElementPosition(position.getAbscisse(), position.getOrdonnee()+GameConfiguration.BLOCK_SIZE);
+			}
+		}while(simulation.isForbiddenForAnimalsAfterDeparture(newPosition));
+		animal.setPosition(newPosition);
 	}
 
 	private void rightBottomMove(Intersection position, Animal animal) {
-		double percent = Math.random();
-		if(percent <= 0.50) {
-			Intersection newPosition = map.getElementPosition(position.getAbscisse()-GameConfiguration.BLOCK_SIZE,position.getOrdonnee());
-			animal.setPosition(newPosition);
-		}
-		else if(percent > 0.50) {
-			Intersection newPosition = map.getElementPosition(position.getAbscisse(), position.getOrdonnee()-GameConfiguration.BLOCK_SIZE);
-			animal.setPosition(newPosition);
-		}
+		Intersection[][] intersections = map.getIntersections();
+		Intersection newPosition = intersections[0][0];
+		do {
+			double percent = Math.random();
+			if(percent <= 0.50) {
+				newPosition = map.getElementPosition(position.getAbscisse()-GameConfiguration.BLOCK_SIZE,position.getOrdonnee());
+			}
+			else if(percent > 0.50) {
+				newPosition = map.getElementPosition(position.getAbscisse(), position.getOrdonnee()-GameConfiguration.BLOCK_SIZE);
+			}
+		}while(simulation.isForbiddenForAnimalsAfterDeparture(newPosition));
+		animal.setPosition(newPosition);
 	}
 
 	private void leftBottomMove(Intersection position, Animal animal) {
-		double percent = Math.random();
-		if(percent <= 0.50) {
-			Intersection newPosition = map.getElementPosition(position.getAbscisse()+GameConfiguration.BLOCK_SIZE,position.getOrdonnee());
-			animal.setPosition(newPosition);
-		}
-		else if(percent > 0.50) {
-			Intersection newPosition = map.getElementPosition(position.getAbscisse(), position.getOrdonnee()-GameConfiguration.BLOCK_SIZE);
-			animal.setPosition(newPosition);
-		}	
+		Intersection[][] intersections = map.getIntersections();
+		Intersection newPosition = intersections[0][0];
+		do {
+			double percent = Math.random();
+			if(percent <= 0.50) {
+				newPosition = map.getElementPosition(position.getAbscisse()+GameConfiguration.BLOCK_SIZE,position.getOrdonnee());
+			}
+			else if(percent > 0.50) {
+				newPosition = map.getElementPosition(position.getAbscisse(), position.getOrdonnee()-GameConfiguration.BLOCK_SIZE);
+			}	
+		}while(simulation.isForbiddenForAnimalsAfterDeparture(newPosition));
+		animal.setPosition(newPosition);
 	}
 
 	private void rightTopMove(Intersection position, Animal animal) {
-		double percent = Math.random();
-		if(percent <= 0.50) {
-			Intersection newPosition = map.getElementPosition(position.getAbscisse()-GameConfiguration.BLOCK_SIZE,position.getOrdonnee());
-			animal.setPosition(newPosition);
-		}
-		else if(percent > 0.50) {
-			Intersection newPosition = map.getElementPosition(position.getAbscisse(), position.getOrdonnee()+GameConfiguration.BLOCK_SIZE);
-			animal.setPosition(newPosition);
-		}
+		Intersection[][] intersections = map.getIntersections();
+		Intersection newPosition = intersections[0][0];
+		do {
+			double percent = Math.random();
+			if(percent <= 0.50) {
+				newPosition = map.getElementPosition(position.getAbscisse()-GameConfiguration.BLOCK_SIZE,position.getOrdonnee());
+			}
+			else if(percent > 0.50) {
+				newPosition = map.getElementPosition(position.getAbscisse(), position.getOrdonnee()+GameConfiguration.BLOCK_SIZE);
+			}
+		}while(simulation.isForbiddenForAnimalsAfterDeparture(newPosition));
+		animal.setPosition(newPosition);
 	}
 
 	private void leftTopMove(Intersection position, Animal animal) {
-		double percent = Math.random();
-		if(percent <= 0.50) {
-			Intersection newPosition = map.getElementPosition(position.getAbscisse()+GameConfiguration.BLOCK_SIZE,position.getOrdonnee());
-			animal.setPosition(newPosition);
-		}
-		else if(percent > 0.50) {
-			Intersection newPosition = map.getElementPosition(position.getAbscisse(), position.getOrdonnee()+GameConfiguration.BLOCK_SIZE);
-			animal.setPosition(newPosition);
-		}	
+		Intersection[][] intersections = map.getIntersections();
+		Intersection newPosition = intersections[0][0];
+		do {
+			double percent = Math.random();
+			if(percent <= 0.50) {
+				newPosition = map.getElementPosition(position.getAbscisse()+GameConfiguration.BLOCK_SIZE,position.getOrdonnee());
+			}
+			else if(percent > 0.50) {
+				newPosition = map.getElementPosition(position.getAbscisse(), position.getOrdonnee()+GameConfiguration.BLOCK_SIZE);
+			}	
+		}while(simulation.isForbiddenForAnimalsAfterDeparture(newPosition));
+		animal.setPosition(newPosition);
 	}	
-
 
 }

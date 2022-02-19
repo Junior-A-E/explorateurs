@@ -6,6 +6,7 @@ import javax.swing.JPanel;
 
 import configuration.GameConfiguration;
 import element.Animal;
+import element.Explorer;
 import element.Mountain;
 import element.Treasure;
 import map.Intersection;
@@ -31,6 +32,7 @@ public class GameDisplay extends JPanel{
 		printAnimals(g);
 		printMountains(g);
 		printTreasures(g);
+		printExplorers(g);
 	}
 	
 	public void paint(Map map, Graphics g) {
@@ -72,6 +74,13 @@ public class GameDisplay extends JPanel{
 		for(Mountain moutain : simulation.getMountains()) {
 			Intersection position = moutain.getPosition();
 			g.drawImage(GameUtility.readImage("src/images/mountain.png"),position.getAbscisse(),position.getOrdonnee(),GameConfiguration.BLOCK_SIZE,GameConfiguration.BLOCK_SIZE,null);
+		}
+	}
+	
+	public void printExplorers(Graphics g) {
+		for(Explorer explorer : simulation.getExplorers()) {
+			Intersection position = explorer.getPosition();
+			g.drawImage(GameUtility.readImage("src/images/explorer.png"),position.getAbscisse(),position.getOrdonnee(),GameConfiguration.BLOCK_SIZE,GameConfiguration.BLOCK_SIZE,null);
 		}
 	}
 
