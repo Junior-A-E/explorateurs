@@ -1,13 +1,10 @@
 package test;
 
-import gui.MainGui;
+import gui.MenuGUI;
 
 public class Exploration {
 
-public static void main(String[] args) {
-	 	
-		MainGui game = new MainGui(); 
-		Thread guiTread = new Thread(game);
-		guiTread.start();
-	}
+    public static void main(String[] args) {
+        MenuGUI menuGUI = new MenuGUI();
+    }
 }

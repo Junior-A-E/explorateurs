@@ -1,2 +1,9 @@
 /GameDisplay.class
 /MainGui.class
+/ImageGUI.class
+/MainGui$ActionMenu.class
+/MenuGUI$ActionRegles.class
+/MenuGUI$ActionStart.class
+/MenuGUI.class
+/ReglesGUI$ActionMenu.class
+/ReglesGUI.class
