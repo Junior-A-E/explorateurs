@@ -2,13 +2,10 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -16,78 +13,65 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
+/**
+ * This class contains the Menu Frame (first enter in the game).
+ * 
+ * @author Nathan Chriqui
+ */
 public class MenuGUI extends JFrame {
 
     private static final long serialVersionUID = 1L;
 
-    private static final Font BUTTON_FONT = new Font(Font.MONOSPACED, Font.CENTER_BASELINE, 75);
+    private JLabel jeuLabel = new JLabel("Explorateurs");
 
-    private JLabel jeu = new JLabel(" Explorateurs ");
-
-    protected JButton start = new JButton("Start");
-    protected JButton options = new JButton("Options");
-    protected JButton regles = new JButton("Règles du jeu");
+    protected JButton startButton = new JButton(new ImageIcon("src/images/start.png"));
+    protected JButton reglesButton = new JButton(new ImageIcon("src/images/regles.png"));
+    protected JButton exitButton = new JButton(new ImageIcon("src/images/quitter.png"));
 
     public MenuGUI() {
-
         super("Explorateurs - Menu");
 
         initStyle();
 
         initLayout();
-
     }
 
     protected void initStyle() {
         Font font = new Font(Font.MONOSPACED, Font.CENTER_BASELINE, 120);
-        jeu.setFont(font);
-        jeu.setForeground(Color.decode("#ec9706"));
-
-        start.setFont(BUTTON_FONT);
-        options.setFont(BUTTON_FONT);
-        regles.setFont(BUTTON_FONT);
-
+        jeuLabel.setFont(font);
+        jeuLabel.setForeground(Color.decode("#ec9706"));
     }
 
     protected void initLayout() {
-
         try {
             Image img = ImageIO.read(new File("src/images/background.jpg"));
             ImageGUI imgGui = new ImageGUI(img);
 
-            imgGui.setLayout(new GridLayout(3, 1));
-            jeu.setBounds(-10, -300, 5000, 850);
-            imgGui.add(jeu);
-
-            JPanel panel = new JPanel();
             imgGui.setLayout(null);
-            imgGui.add(panel);
 
-            JButton start = new JButton(new ImageIcon("src/images/start.png"));
-            start.setBounds(240, 270, 500, 78);
-            imgGui.add(start);
-            start.addActionListener(new ActionStart(this));
+            jeuLabel.setBounds(58, 20, 1200, 150);
+            imgGui.add(jeuLabel);
 
-            JButton options = new JButton(new ImageIcon("src/images/options.png"));
-            options.setBounds(240, 400, 500, 78);
-            imgGui.add(options);
-//          options.addActionListener(new ActionOptions(this));
+            startButton.setBounds(300, 270, 400, 65);
+            imgGui.add(startButton);
+            startButton.addActionListener(new ActionStart(this));
 
-            JButton regles = new JButton(new ImageIcon("src/images/regles.png"));
-            regles.setBounds(240, 530, 500, 78);
-            imgGui.add(regles);
-            regles.addActionListener(new ActionRegles(this));
+            reglesButton.setBounds(300, 400, 400, 65);
+            imgGui.add(reglesButton);
+            reglesButton.addActionListener(new ActionRegles(this));
+
+            exitButton.setBounds(300, 530, 400, 65);
+            imgGui.add(exitButton);
+            exitButton.addActionListener(new ActionExit(this));
 
             this.add(imgGui);
             this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-            this.setBounds(500, 100, 1000, 800);
+            this.setBounds(500, 100, 1000, 750);
             this.setLocationRelativeTo(null);
             this.setResizable(false);
             this.setVisible(true);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -101,28 +85,9 @@ public class MenuGUI extends JFrame {
 
         public void actionPerformed(ActionEvent e) {
             frame.dispose();
-            MainGui game = new MainGui();
-            Thread guiTread = new Thread(game);
-            guiTread.start();
+            new StrategyGUI();
         }
-
     }
-
-//    class ActionOptions implements ActionListener{
-//        private JFrame frame;
-//        
-//        public ActionOptions(JFrame frame) {
-//            this.frame = frame;
-//        }
-//        
-//    //opening the option window
-//        public void actionPerformed(ActionEvent e) {
-//            frame.dispose();
-//            new OptionsGUI();
-//           
-//        }
-//        
-//    }
 
     class ActionRegles implements ActionListener {
         private JFrame frame;
@@ -131,11 +96,21 @@ public class MenuGUI extends JFrame {
             this.frame = frame;
         }
 
-        // opening the option window
         public void actionPerformed(ActionEvent e) {
             frame.dispose();
             new ReglesGUI();
         }
+    }
 
+    class ActionExit implements ActionListener {
+        private JFrame frame;
+
+        public ActionExit(JFrame frame) {
+            this.frame = frame;
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            frame.dispose();
+        }
     }
 }

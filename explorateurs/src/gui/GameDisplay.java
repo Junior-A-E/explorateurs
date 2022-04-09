@@ -14,6 +14,13 @@ import map.Map;
 import process.GameUtility;
 import process.Simulation;
 
+/**
+ * This class contain the methods for the draw of the map.
+ * 
+ * @author Mathis Da Cruz
+ * @author Junior Afatchawo
+ * @author Nathan Chriqui
+ */
 public class GameDisplay extends JPanel {
 
     private static final long serialVersionUID = 1L;

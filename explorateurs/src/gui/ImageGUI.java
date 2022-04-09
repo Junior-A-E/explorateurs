@@ -6,6 +6,11 @@ import java.io.Serializable;
 
 import javax.swing.JPanel;
 
+/**
+ * This class draw a panel to do a frame with a background image.
+ * 
+ * @author Nathan Chriqui
+ */
 public class ImageGUI extends JPanel implements Serializable {
 
     private static final long serialVersionUID = 1L;

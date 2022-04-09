@@ -1,5 +1,12 @@
 package map;
 
+/**
+ * This class define the intersection of an element.
+ * 
+ * @author Junior Afatchawo
+ * @author Mathis Da Cruz
+ * @author Nathan Chriqui
+ */
 public class Intersection {
 
     private int abscisse;

@@ -1,10 +1,12 @@
 package map;
 
-import java.util.ArrayList;
-
 import configuration.GameConfiguration;
-import process.GameUtility;
 
+/**
+ * This class allows to define all the intersections of the map.
+ * 
+ * @author Junior Afatchawo
+ */
 public class Map {
 
     private Intersection[][] intersections;
@@ -82,78 +84,89 @@ public class Map {
         return getIntersection(abscisse, ordonnee);
     }
 
+    /**
+     * Verify that the element position is on the left top of the map
+     * @param position Element position
+     * @return boolean True is yes, false otherwise
+     */
     public boolean isOnLeftTop(Intersection position) {
         return position.getAbscisse() == GameConfiguration.Abscisse_Start && position.getOrdonnee() == GameConfiguration.Ordonnee_Start;
     }
 
+    /**
+     * Verify that the element position is on the right top of the map
+     * @param position Element position
+     * @return boolean True is yes, false otherwise
+     */
     public boolean isOnRightTop(Intersection position) {
         int abscisse = position.getAbscisse();
         int ordonnee = position.getOrdonnee();
         return abscisse == distance && ordonnee == GameConfiguration.Ordonnee_Start;
     }
 
+    /**
+     * Verify that the element position is on the left bottom of the map
+     * @param position Element position
+     * @return boolean True is yes, false otherwise
+     */
     public boolean isOnLeftBottom(Intersection position) {
         int x = position.getAbscisse();
         int y = position.getOrdonnee();
         return x == GameConfiguration.Abscisse_Start && y == distance;
     }
 
+    /**
+     * Verify that the element position is on the right bottom of the map
+     * @param position Element position
+     * @return boolean True is yes, false otherwise
+     */
     public boolean isOnRightBottom(Intersection position) {
         int x = position.getAbscisse();
         int y = position.getOrdonnee();
         return x == distance && y == distance;
     }
 
+    /**
+     * Verify that the element position is on the top border of the map
+     * @param position Element position
+     * @return boolean True is yes, false otherwise
+     */
     public boolean isOnTopBorder(Intersection position) {
         int x = position.getAbscisse();
         int y = position.getOrdonnee();
         return GameConfiguration.Abscisse_Start <= x && x <= distance && y == GameConfiguration.Ordonnee_Start;
     }
 
+    /**
+     * Verify that the element position is on the bottom border of the map
+     * @param position Element position
+     * @return boolean True is yes, false otherwise
+     */
     public boolean isOnBottomBorder(Intersection position) {
         int x = position.getAbscisse();
         int y = position.getOrdonnee();
         return GameConfiguration.Abscisse_Start <= x && x <= distance && y == distance;
     }
 
+    /**
+     * Verify that the element position is on the left border of the map
+     * @param position Element position
+     * @return boolean True is yes, false otherwise
+     */
     public boolean isOnLeftBorder(Intersection position) {
         int x = position.getAbscisse();
         int y = position.getOrdonnee();
         return GameConfiguration.Abscisse_Start == x && y >= GameConfiguration.Ordonnee_Start && y <= distance;
     }
 
+    /**
+     * Verify that the element position is on the right border of the map
+     * @param position Element position
+     * @return boolean True is yes, false otherwise
+     */
     public boolean isOnRightBorder(Intersection position) {
         int x = position.getAbscisse();
         int y = position.getOrdonnee();
         return x == distance && y >= GameConfiguration.Ordonnee_Start && y <= distance;
     }
-
-    /*
-     * public Intersection getFreeNeighbour(Intersection intersection) {
-     * ArrayList<Intersection> neighbours = new ArrayList<Intersection>(); int n =
-     * 0; int x = intersection.getAbscisse(); int y = intersection.getOrdonnee();
-     * 
-     * int xl = intersection.getAbscisse()-(GameConfiguration.BLOCK_SIZE); int xr =
-     * intersection.getAbscisse()+(GameConfiguration.BLOCK_SIZE);
-     * 
-     * int yu = intersection.getOrdonnee()-(GameConfiguration.BLOCK_SIZE); int yd =
-     * intersection.getOrdonnee()+(GameConfiguration.BLOCK_SIZE);
-     * 
-     * if(!isOnLeftBorder(intersection)) { Intersection left =
-     * getElementPosition(xl, y); if(!isOccupied(left)) { neighbours.add(left); n++;
-     * } }
-     * 
-     * if(!isOnRightBorder(intersection)) { Intersection right =
-     * getElementPosition(xr, y); if(!isOccupied(right)) { neighbours.add(right);
-     * n++; } }
-     * 
-     * if(!isOnTopBorder(intersection)) { Intersection up = getElementPosition(x,
-     * yu); if(!isOccupied(up)) { neighbours.add(up); n++; } }
-     * 
-     * if(!isOnBottomBorder(intersection)) { Intersection down =
-     * getElementPosition(x, yd); if(!isOccupied(down)) { neighbours.add(down); n++;
-     * } } Intersection keep = new Intersection(0,0); int count = 0; int sort =
-     * GameUtility.getRandomNumber(count, n); for(Intersection i : neighbours) {
-     * if(count == sort) { keep = i; } count ++; } return keep; }
-     */
 }

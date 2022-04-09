@@ -3,183 +3,174 @@ package process;
 import java.util.ArrayList;
 
 import configuration.GameConfiguration;
+import element.Animal;
 import element.Explorer;
+import element.Treasure;
 import map.Intersection;
 import map.Map;
+import strategy.EquipmentStrategy;
+import strategy.SwordStrategy;
+import strategy.ShieldStrategy;
 
-public class ExplorerManager {
+/**
+ * This class manages all explorers of the map.
+ * Each instance of the class represents a explorer on the map.
+ * 
+ * @author Mathis Da Cruz
+ * @author Junior Afatchawo *
+ */
+public class ExplorerManager extends Thread{
 
-    private Map map;
     private Simulation simulation;
-    private volatile ArrayList<Intersection> explorersTurnIntersection = new ArrayList<Intersection>();
-
-    public ExplorerManager(Map map, Simulation simulation) {
+    private IntersectionManager intersectionManager;
+    private Explorer explorer;
+    
+    private EquipmentStrategy equipmentStrategy;
+    private SwordStrategy swordStrategy;
+    private ShieldStrategy shieldStrategy;
+    
+    /**
+     * The explorer has finished his exploration.
+     */
+    private boolean finish = false;
+    
+    /**
+     * The explorer departs from the start point.
+     */
+    private boolean running = false;
+	private Treasure treasure;
+    
+    public ExplorerManager(Map map, Simulation simulation, Explorer explorer) {
         super();
-        this.map = map;
         this.simulation = simulation;
+        this.explorer = explorer;
+        equipmentStrategy = new EquipmentStrategy(map, explorer, simulation);
+        swordStrategy = new SwordStrategy(map, explorer, simulation);
+        shieldStrategy = new ShieldStrategy(map, explorer, simulation);
     }
+    
+    @Override
+    public void run() {
+    	
+    	if(simulation.getStrat() == 0) {
+    		doFirstStrategy();
+    	}
+    	else if (simulation.getStrat() == 1) {
+    		doSecondStrategy();
+    	}
+    	else {
+    		doThirdStrategy();
+    	}
+    }
+    
+    /**
+     * Run the equipment strategy.
+     */
+    private void doFirstStrategy() {
+		while(!finish && running) {
+    		if(this.treasure == null) {
+    			this.treasure = simulation.getNextTreasure();
+    			System.out.println(treasure);
+    			treasure.setTake(true);
+    		}
+    		
+    		while (!finish && running) {
+    			GameUtility.unitTime();
+    			Intersection position = explorer.getPosition();
+    			Intersection newPosition = equipmentStrategy.call(position,treasure);
+    			explorer.setPosition(newPosition);
+    			IntersectionManager nextIntersectionManager = simulation.getIntersectionManagersByPosition(newPosition);
+    			nextIntersectionManager.enter(this);
+    		}
+    	}
+	}
 
-    protected void moveExplorers() {
-        for (Explorer explorer : simulation.getExplorers()) {
-            // System.out.println(animal.getPosition().toString());
-            Intersection position = explorer.getPosition();
-            if (map.isOnLeftTop(position)) {
-                leftTopMove(position, explorer);
-            } else if (map.isOnRightTop(position)) {
-                rightTopMove(position, explorer);
-            } else if (map.isOnLeftBottom(position)) {
-                leftBottomMove(position, explorer);
-            } else if (map.isOnRightBottom(position)) {
-                rightBottomMove(position, explorer);
-            } else if (map.isOnTopBorder(position)) {
-                topBorderMove(position, explorer);
-            } else if (map.isOnBottomBorder(position)) {
-                bottomBorderMove(explorer, position);
-            } else if (map.isOnLeftBorder(position)) {
-                leftBorderMove(explorer, position);
-            } else if (map.isOnRightBorder(position)) {
-                rightBorderMove(explorer, position);
-            } else {
-                normalMove(explorer, position);
-            }
-        }
-    }
+    /**
+     * Run the sword strategy.
+     */
+	private void doSecondStrategy() {
+		while(!finish && running) {
+			if(this.treasure == null) {
+    			this.treasure = simulation.getNextTreasure();
+    			System.out.println(treasure);
+    			treasure.setTake(true);
+    		}
+//			if(this.animal == null) {
+//    			this.animal = simulation.getNextAnimal();
+//    			System.out.println(animal);
+//    			animal.setTake(true);
+//    		}
+    		
+    		while (!finish && running) {
+    			
+    			GameUtility.unitTime();
+    			Intersection position = explorer.getPosition(); 
+    			Intersection newPosition = new Intersection(1, 1);
+//    			if(explorer.getFree()==1) {
+//    				//while(simulation.getTreasures().size()>0){
+//    					System.out.println(explorer+"is freeNFGVOISE;BGVUIGOPRGBEWRGBI;EWTGTQWEUBOTGW8E9;ATQWEAGIUL;EW79SI");
+//    					newPosition = strategy2.call(position,simulation.getTreasures().get(0));
+//    				//}
+//    				
+//    				
+//    			}
+    			//else {
+    				newPosition = swordStrategy.call(position,treasure);
+    			//}
+    			
+    			explorer.setPosition(newPosition);
+    			IntersectionManager nextIntersectionManager = simulation.getIntersectionManagersByPosition(newPosition);
+    			nextIntersectionManager.enter(this);
+    		}   		   		
+		}
+		
+	}
 
-    private void normalMove(Explorer explorer, Intersection position) {
-        Intersection[][] intersections = map.getIntersections();
-        Intersection newPosition = intersections[0][0];
-        do {
-            double percent = Math.random();
-            if (percent <= 0.25) {
-                newPosition = map.getElementPosition(position.getAbscisse(), position.getOrdonnee() + GameConfiguration.BLOCK_SIZE);
-            } else if (percent > 0.25 && percent <= 0.50) {
-                newPosition = map.getElementPosition(position.getAbscisse(), position.getOrdonnee() - GameConfiguration.BLOCK_SIZE);
-            } else if (percent > 0.50 && percent <= 0.75) {
-                newPosition = map.getElementPosition(position.getAbscisse() + GameConfiguration.BLOCK_SIZE, position.getOrdonnee());
-            } else {
-                newPosition = map.getElementPosition(position.getAbscisse() - GameConfiguration.BLOCK_SIZE, position.getOrdonnee());
-            }
-        } while (simulation.isForbiddenForExplorers(newPosition));
-        explorer.setPosition(newPosition);
-    }
+    /**
+     * Run the shield strategy.
+     */
+	private void doThirdStrategy() {
+		while(!finish && running) {
+    		if(this.treasure == null) {
+    			this.treasure = simulation.getNextTreasure();
+    			System.out.println(treasure);
+    			treasure.setTake(true);
+    		}
+    		
+    		while (!finish && running) {
+    			GameUtility.unitTime();
+    			Intersection position = explorer.getPosition();
+    			Intersection newPosition = shieldStrategy.call(position,treasure);
+    			explorer.setPosition(newPosition);
+    			IntersectionManager nextIntersectionManager = simulation.getIntersectionManagersByPosition(newPosition);
+    			nextIntersectionManager.enter(this);
+    		}
+    	}
+		
+	}	
 
-    private void rightBorderMove(Explorer explorer, Intersection position) {
-        Intersection[][] intersections = map.getIntersections();
-        Intersection newPosition = intersections[0][0];
-        do {
-            double percent = Math.random();
-            if (percent <= 0.33) {
-                newPosition = map.getElementPosition(position.getAbscisse(), position.getOrdonnee() + GameConfiguration.BLOCK_SIZE);
-            } else if (percent > 0.33 && percent <= 0.66) {
-                newPosition = map.getElementPosition(position.getAbscisse(), position.getOrdonnee() - GameConfiguration.BLOCK_SIZE);
-            } else if (percent > 0.67) {
-                newPosition = map.getElementPosition(position.getAbscisse() - GameConfiguration.BLOCK_SIZE, position.getOrdonnee());
-            }
-        } while (simulation.isForbiddenForExplorers(newPosition));
-        explorer.setPosition(newPosition);
-    }
+	public void updatePosition(Intersection position) {
+		explorer.setPosition(position);
+	}
 
-    private void leftBorderMove(Explorer explorer, Intersection position) {
-        Intersection[][] intersections = map.getIntersections();
-        Intersection newPosition = intersections[0][0];
-        do {
-            double percent = Math.random();
-            if (percent <= 0.33) {
-                newPosition = map.getElementPosition(position.getAbscisse(), position.getOrdonnee() + GameConfiguration.BLOCK_SIZE);
-            } else if (percent > 0.33 && percent <= 0.66) {
-                newPosition = map.getElementPosition(position.getAbscisse(), position.getOrdonnee() - GameConfiguration.BLOCK_SIZE);
-            } else if (percent > 0.67) {
-                newPosition = map.getElementPosition(position.getAbscisse() + GameConfiguration.BLOCK_SIZE, position.getOrdonnee());
-            }
-        } while (simulation.isForbiddenForExplorers(newPosition));
-        explorer.setPosition(newPosition);
-    }
+	public IntersectionManager getIntersectionManager() {
+		return intersectionManager;
+	}
 
-    private void bottomBorderMove(Explorer explorer, Intersection position) {
-        Intersection[][] intersections = map.getIntersections();
-        Intersection newPosition = intersections[0][0];
-        do {
-            double percent = Math.random();
-            if (percent <= 0.33) {
-                newPosition = map.getElementPosition(position.getAbscisse() - GameConfiguration.BLOCK_SIZE, position.getOrdonnee());
-            } else if (percent > 0.33 && percent <= 0.66) {
-                newPosition = map.getElementPosition(position.getAbscisse() + GameConfiguration.BLOCK_SIZE, position.getOrdonnee());
-            } else if (percent > 0.67) {
-                newPosition = map.getElementPosition(position.getAbscisse(), position.getOrdonnee() - GameConfiguration.BLOCK_SIZE);
-            }
-        } while (simulation.isForbiddenForExplorers(newPosition));
-        explorer.setPosition(newPosition);
-    }
+	public void setIntersectionManager(IntersectionManager intersectionManager2) {
+		this.intersectionManager = intersectionManager2;
+	}
 
-    private void topBorderMove(Intersection position, Explorer explorer) {
-        Intersection[][] intersections = map.getIntersections();
-        Intersection newPosition = intersections[0][0];
-        do {
-            double percent = Math.random();
-            if (percent <= 0.33) {
-                newPosition = map.getElementPosition(position.getAbscisse() - GameConfiguration.BLOCK_SIZE, position.getOrdonnee());
-            } else if (percent > 0.33 && percent <= 0.66) {
-                newPosition = map.getElementPosition(position.getAbscisse() + GameConfiguration.BLOCK_SIZE, position.getOrdonnee());
-            } else if (percent > 0.67) {
-                newPosition = map.getElementPosition(position.getAbscisse(), position.getOrdonnee() + GameConfiguration.BLOCK_SIZE);
-            }
-        } while (simulation.isForbiddenForExplorers(newPosition));
-        explorer.setPosition(newPosition);
-    }
+	public void setRunning(boolean running) {
+		this.running = running;
+		
+	}
 
-    private void rightBottomMove(Intersection position, Explorer explorer) {
-        Intersection[][] intersections = map.getIntersections();
-        Intersection newPosition = intersections[0][0];
-        do {
-            double percent = Math.random();
-            if (percent <= 0.50) {
-                newPosition = map.getElementPosition(position.getAbscisse() - GameConfiguration.BLOCK_SIZE, position.getOrdonnee());
-            } else if (percent > 0.50) {
-                newPosition = map.getElementPosition(position.getAbscisse(), position.getOrdonnee() - GameConfiguration.BLOCK_SIZE);
-            }
-        } while (simulation.isForbiddenForExplorers(newPosition));
-        explorer.setPosition(newPosition);
-    }
+	public void setBlockManager(IntersectionManager intersectionManager) {
+		this.intersectionManager = intersectionManager;
+	}
 
-    private void leftBottomMove(Intersection position, Explorer explorer) {
-        Intersection[][] intersections = map.getIntersections();
-        Intersection newPosition = intersections[0][0];
-        do {
-            double percent = Math.random();
-            if (percent <= 0.50) {
-                newPosition = map.getElementPosition(position.getAbscisse() + GameConfiguration.BLOCK_SIZE, position.getOrdonnee());
-            } else if (percent > 0.50) {
-                newPosition = map.getElementPosition(position.getAbscisse(), position.getOrdonnee() - GameConfiguration.BLOCK_SIZE);
-            }
-        } while (simulation.isForbiddenForExplorers(newPosition));
-        explorer.setPosition(newPosition);
-    }
-
-    private void rightTopMove(Intersection position, Explorer explorer) {
-        Intersection[][] intersections = map.getIntersections();
-        Intersection newPosition = intersections[0][0];
-        do {
-            double percent = Math.random();
-            if (percent <= 0.50) {
-                newPosition = map.getElementPosition(position.getAbscisse() - GameConfiguration.BLOCK_SIZE, position.getOrdonnee());
-            } else if (percent > 0.50) {
-                newPosition = map.getElementPosition(position.getAbscisse(), position.getOrdonnee() + GameConfiguration.BLOCK_SIZE);
-            }
-        } while (simulation.isForbiddenForExplorers(newPosition));
-        explorer.setPosition(newPosition);
-    }
-
-    private void leftTopMove(Intersection position, Explorer explorer) {
-        Intersection[][] intersections = map.getIntersections();
-        Intersection newPosition = intersections[0][0];
-        do {
-            double percent = Math.random();
-            if (percent <= 0.50) {
-                newPosition = map.getElementPosition(position.getAbscisse() + GameConfiguration.BLOCK_SIZE, position.getOrdonnee());
-            } else if (percent > 0.50) {
-                newPosition = map.getElementPosition(position.getAbscisse(), position.getOrdonnee() + GameConfiguration.BLOCK_SIZE);
-            }
-        } while (simulation.isForbiddenForExplorers(newPosition));
-        explorer.setPosition(newPosition);
-    }
+	public boolean isRunning() {
+		return running;
+	}
 }

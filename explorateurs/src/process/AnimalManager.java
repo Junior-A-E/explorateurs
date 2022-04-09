@@ -5,6 +5,13 @@ import element.Animal;
 import map.Intersection;
 import map.Map;
 
+/**
+ * This class manages all animals of the map.
+ * 
+ * @author Mathis Da Cruz
+ * @author Junior Afatchawo
+ * @author Nathan Chriqui
+ */
 public class AnimalManager {
 
     private Map map;
@@ -15,6 +22,9 @@ public class AnimalManager {
         this.map = map;
     }
 
+    /**
+     * Verify if animals are on card ends and move them in case.
+     */
     protected void moveAnimals() {
         for (Animal animal : simulation.getAnimals()) {
             // System.out.println(animal.getPosition().toString());
@@ -41,10 +51,15 @@ public class AnimalManager {
         }
     }
 
+    /**
+     * Define animal's normal random move.
+     * @param animal The animal to move
+     * @param position The position of the animal to move
+     */
     private void normalMove(Animal animal, Intersection position) {
         Intersection[][] intersections = map.getIntersections();
         Intersection newPosition = intersections[0][0];
-        do {
+        //do {
             double percent = Math.random();
             if (percent <= 0.25) {
                 newPosition = map.getElementPosition(position.getAbscisse(), position.getOrdonnee() + GameConfiguration.BLOCK_SIZE);
@@ -55,14 +70,19 @@ public class AnimalManager {
             } else {
                 newPosition = map.getElementPosition(position.getAbscisse() - GameConfiguration.BLOCK_SIZE, position.getOrdonnee());
             }
-        } while (simulation.isForbiddenForAnimalsAfterDeparture(newPosition));
+        //} while (simulation.isForbiddenForAnimalsAfterDeparture(newPosition));
         animal.setPosition(newPosition);
     }
 
+    /**
+     * Define animal's random move when animal is on right border of the map.
+     * @param animal The animal to move
+     * @param position The position of the animal to move
+     */
     private void rightBorderMove(Animal animal, Intersection position) {
         Intersection[][] intersections = map.getIntersections();
         Intersection newPosition = intersections[0][0];
-        do {
+        //do {
             double percent = Math.random();
             if (percent <= 0.33) {
                 newPosition = map.getElementPosition(position.getAbscisse(), position.getOrdonnee() + GameConfiguration.BLOCK_SIZE);
@@ -71,14 +91,19 @@ public class AnimalManager {
             } else if (percent > 0.67) {
                 newPosition = map.getElementPosition(position.getAbscisse() - GameConfiguration.BLOCK_SIZE, position.getOrdonnee());
             }
-        } while (simulation.isForbiddenForAnimalsAfterDeparture(newPosition));
+        //} while (simulation.isForbiddenForAnimalsAfterDeparture(newPosition));
         animal.setPosition(newPosition);
     }
 
+    /**
+     * Define animal's random move when animal is on left border of the map.
+     * @param animal The animal to move
+     * @param position The position of the animal to move
+     */
     private void leftBorderMove(Animal animal, Intersection position) {
         Intersection[][] intersections = map.getIntersections();
         Intersection newPosition = intersections[0][0];
-        do {
+        //do {
             double percent = Math.random();
             if (percent <= 0.33) {
                 newPosition = map.getElementPosition(position.getAbscisse(), position.getOrdonnee() + GameConfiguration.BLOCK_SIZE);
@@ -87,14 +112,19 @@ public class AnimalManager {
             } else if (percent > 0.67) {
                 newPosition = map.getElementPosition(position.getAbscisse() + GameConfiguration.BLOCK_SIZE, position.getOrdonnee());
             }
-        } while (simulation.isForbiddenForAnimalsAfterDeparture(newPosition));
+        //} while (simulation.isForbiddenForAnimalsAfterDeparture(newPosition));
         animal.setPosition(newPosition);
     }
 
+    /**
+     * Define animal's random move when animal is on bottom border of the map.
+     * @param animal The animal to move
+     * @param position The position of the animal to move
+     */
     private void bottomBorderMove(Animal animal, Intersection position) {
         Intersection[][] intersections = map.getIntersections();
         Intersection newPosition = intersections[0][0];
-        do {
+        //do {
             double percent = Math.random();
             if (percent <= 0.33) {
                 newPosition = map.getElementPosition(position.getAbscisse() - GameConfiguration.BLOCK_SIZE, position.getOrdonnee());
@@ -103,14 +133,19 @@ public class AnimalManager {
             } else if (percent > 0.67) {
                 newPosition = map.getElementPosition(position.getAbscisse(), position.getOrdonnee() - GameConfiguration.BLOCK_SIZE);
             }
-        } while (simulation.isForbiddenForAnimalsAfterDeparture(newPosition));
+        //} while (simulation.isForbiddenForAnimalsAfterDeparture(newPosition));
         animal.setPosition(newPosition);
     }
 
+    /**
+     * Define animal's random move when animal is on top border of the map.
+     * @param animal The animal to move
+     * @param position The position of the animal to move
+     */
     private void topBorderMove(Intersection position, Animal animal) {
         Intersection[][] intersections = map.getIntersections();
         Intersection newPosition = intersections[0][0];
-        do {
+        //do {
             double percent = Math.random();
             if (percent <= 0.33) {
                 newPosition = map.getElementPosition(position.getAbscisse() - GameConfiguration.BLOCK_SIZE, position.getOrdonnee());
@@ -119,63 +154,83 @@ public class AnimalManager {
             } else if (percent > 0.67) {
                 newPosition = map.getElementPosition(position.getAbscisse(), position.getOrdonnee() + GameConfiguration.BLOCK_SIZE);
             }
-        } while (simulation.isForbiddenForAnimalsAfterDeparture(newPosition));
+        //} while (simulation.isForbiddenForAnimalsAfterDeparture(newPosition));
         animal.setPosition(newPosition);
     }
 
+    /**
+     * Define animal's random move when animal is on right bottom of the map.
+     * @param animal The animal to move
+     * @param position The position of the animal to move
+     */
     private void rightBottomMove(Intersection position, Animal animal) {
         Intersection[][] intersections = map.getIntersections();
         Intersection newPosition = intersections[0][0];
-        do {
+        //do {
             double percent = Math.random();
             if (percent <= 0.50) {
                 newPosition = map.getElementPosition(position.getAbscisse() - GameConfiguration.BLOCK_SIZE, position.getOrdonnee());
             } else if (percent > 0.50) {
                 newPosition = map.getElementPosition(position.getAbscisse(), position.getOrdonnee() - GameConfiguration.BLOCK_SIZE);
             }
-        } while (simulation.isForbiddenForAnimalsAfterDeparture(newPosition));
+        //} while (simulation.isForbiddenForAnimalsAfterDeparture(newPosition));
         animal.setPosition(newPosition);
     }
 
+    /**
+     * Define animal's random move when animal is on left bottom of the map.
+     * @param animal The animal to move
+     * @param position The position of the animal to move
+     */
     private void leftBottomMove(Intersection position, Animal animal) {
         Intersection[][] intersections = map.getIntersections();
         Intersection newPosition = intersections[0][0];
-        do {
+        //do {
             double percent = Math.random();
             if (percent <= 0.50) {
                 newPosition = map.getElementPosition(position.getAbscisse() + GameConfiguration.BLOCK_SIZE, position.getOrdonnee());
             } else if (percent > 0.50) {
                 newPosition = map.getElementPosition(position.getAbscisse(), position.getOrdonnee() - GameConfiguration.BLOCK_SIZE);
             }
-        } while (simulation.isForbiddenForAnimalsAfterDeparture(newPosition));
+        //} while (simulation.isForbiddenForAnimalsAfterDeparture(newPosition));
         animal.setPosition(newPosition);
     }
 
+    /**
+     * Define animal's random move when animal is on right top of the map.
+     * @param animal The animal to move
+     * @param position The position of the animal to move
+     */
     private void rightTopMove(Intersection position, Animal animal) {
         Intersection[][] intersections = map.getIntersections();
         Intersection newPosition = intersections[0][0];
-        do {
+        //do {
             double percent = Math.random();
             if (percent <= 0.50) {
                 newPosition = map.getElementPosition(position.getAbscisse() - GameConfiguration.BLOCK_SIZE, position.getOrdonnee());
             } else if (percent > 0.50) {
                 newPosition = map.getElementPosition(position.getAbscisse(), position.getOrdonnee() + GameConfiguration.BLOCK_SIZE);
             }
-        } while (simulation.isForbiddenForAnimalsAfterDeparture(newPosition));
+        //} while (simulation.isForbiddenForAnimalsAfterDeparture(newPosition));
         animal.setPosition(newPosition);
     }
 
+    /**
+     * Define animal's random move when animal is on left top of the map.
+     * @param animal The animal to move
+     * @param position The position of the animal to move
+     */
     private void leftTopMove(Intersection position, Animal animal) {
         Intersection[][] intersections = map.getIntersections();
         Intersection newPosition = intersections[0][0];
-        do {
+        //do {
             double percent = Math.random();
             if (percent <= 0.50) {
                 newPosition = map.getElementPosition(position.getAbscisse() + GameConfiguration.BLOCK_SIZE, position.getOrdonnee());
             } else if (percent > 0.50) {
                 newPosition = map.getElementPosition(position.getAbscisse(), position.getOrdonnee() + GameConfiguration.BLOCK_SIZE);
             }
-        } while (simulation.isForbiddenForAnimalsAfterDeparture(newPosition));
+        //} while (simulation.isForbiddenForAnimalsAfterDeparture(newPosition));
         animal.setPosition(newPosition);
     }
 
