@@ -18,7 +18,6 @@ public class Explorer extends MapElement {
 
 	public Explorer(Intersection position) {
         super(position);
-        // TODO Auto-generated constructor stub
     }
 	
 	public int getLife() {

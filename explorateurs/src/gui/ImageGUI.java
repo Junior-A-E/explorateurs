@@ -37,7 +37,6 @@ public class ImageGUI extends JPanel implements Serializable {
         if (image != null) { // there is a picture: draw it
             int height = this.getSize().height;
             int width = this.getSize().width;
-            // g.drawImage(image, 0, 0, this); //use image size
             g.drawImage(image, 0, 0, width, height, this);
         }
     }

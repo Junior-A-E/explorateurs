@@ -26,7 +26,6 @@ public class EndGUI extends JFrame {
 
     private int strat;
     private int explorers;
-    private int treasures;
     private int gold;
 
     private JLabel endLabel = new JLabel("Fin d'exploration");
@@ -45,7 +44,6 @@ public class EndGUI extends JFrame {
         this.strat = strat;
         this.end = end;
         this.explorers = explorers;
-        this.treasures = treasures;
         this.gold = gold;
 
         initStyle();
@@ -82,15 +80,15 @@ public class EndGUI extends JFrame {
                 affichage.setText("Exploration échouée...\nVous avez perdu tous vos\nexplorateurs et récupéré 0 pièce d'or.");
                 // Des trésors ont été récup + des explorateurs sont morts
             } else if (end == 2) {
-                affichage.setText("Exploration partiellement réussie !\nVous avez récupéré un joli\nbutin de " + gold + " pièces d'or\nen perdant " + explorers
-                        + " explorateurs");
+                affichage.setText("Exploration partiellement réussie !\nVous avez récupéré un joli\nbutin de " + gold + " pièces d'or\nen perdant "
+                        + explorers + " explorateurs");
                 // Des trésors ont été récup + tout les explorateurs sont morts
             } else if (end == 3) {
                 affichage.setText("Exploration échouée...\nVous avez perdu tous vos\nexplorateurs mais récupéré " + gold + " pièces d'or.");
                 // Tout les trésor récup + quelques explorateurs sont morts
             } else {
-                affichage.setText("Exploration partiellement réussie !\nVous avez récupéré un joli\nbutin de " + gold + " pièces d'or\nen perdant " + explorers
-                        + " explorateurs");
+                affichage.setText("Exploration partiellement réussie !\nVous avez récupéré un joli\nbutin de " + gold + " pièces d'or\nen perdant "
+                        + explorers + " explorateurs");
             }
 
             affichage.setBounds(100, 120, 820, 250);

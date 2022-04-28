@@ -16,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import configuration.GameConfiguration;
+import element.Explorer;
 import map.Intersection;
 import map.Map;
 import process.ExplorerManager;
@@ -48,8 +49,12 @@ public class MainGUI extends JFrame implements Runnable {
     private JPanel tresorsPanel;
     private JPanel goldPanel;
     private JPanel menuPanel;
+    private JPanel lifePanel;
     protected JLabel explorateurLabel = new JLabel("Explorateurs en vie :");
     protected JLabel explorateurValue = new JLabel("");
+    protected JLabel lifeLabel = new JLabel("Vie des explorateurs :");
+    protected JLabel valueLife[];
+    protected JLabel exploName[];
     protected JLabel tresorLabel = new JLabel("Trésors à trouver :");
     protected JLabel tresorValue = new JLabel("");
     protected JLabel goldLabel = new JLabel("Bourse d'or :");
@@ -90,6 +95,9 @@ public class MainGUI extends JFrame implements Runnable {
         tresorValue.setFont(font);
         goldLabel.setFont(font);
         goldValue.setFont(font);
+        
+        lifeLabel.setFont(font);
+        
 
         menuButton.setFont(BUTTON_FONT);
     }
@@ -131,6 +139,24 @@ public class MainGUI extends JFrame implements Runnable {
         explorateursPanel.setLayout(new FlowLayout());
         explorateursPanel.add(explorateurLabel);
         explorateursPanel.add(explorateurValue);
+        
+        valueLife = new JLabel[simulation.getExplorers().size()];
+        exploName = new JLabel[simulation.getExplorers().size()];
+
+        lifePanel = new JPanel();
+        lifePanel.setLayout(new GridLayout(simulation.getExplorers().size(), 2));
+        
+        for(int i = 0; i < simulation.getExplorers().size(); i++) {
+            valueLife[i] = new JLabel("");
+            exploName[i] = new JLabel("");
+            valueLife[i].setHorizontalAlignment(JLabel.CENTER);
+            exploName[i].setHorizontalAlignment(JLabel.CENTER);
+            lifePanel.add(exploName[i]);
+            lifePanel.add(valueLife[i]);
+        }
+        
+        lifeLabel.setHorizontalAlignment(JLabel.CENTER);
+        
 
         tresorValue.setText("" + valueTreasures);
         tresorsPanel = new JPanel();
@@ -139,9 +165,11 @@ public class MainGUI extends JFrame implements Runnable {
         tresorsPanel.add(tresorValue);
 
         infoPanel = new JPanel();
-        infoPanel.setLayout(new GridLayout(4, 1));
+        infoPanel.setLayout(new GridLayout(6, 1));
         infoPanel.add(goldPanel);
         infoPanel.add(explorateursPanel);
+        infoPanel.add(lifeLabel);
+        infoPanel.add(lifePanel);
         infoPanel.add(tresorsPanel);
         infoPanel.add(menuPanel);
 
@@ -181,15 +209,16 @@ public class MainGUI extends JFrame implements Runnable {
     }
 
     public void run() {
-        while (GameConfiguration.NUMBER_TREASURES != 0) {
+        while (simulation.getTreasures().size() != 0) {
             GameUtility.unitTime();
             Intersection position = new Intersection(GameConfiguration.Abscisse_Start, GameConfiguration.Ordonnee_Start);
             IntersectionManager firstIntersectionManager = simulation.getIntersectionManagersByPosition(position);
-            System.out.println(firstIntersectionManager);
+
             if (firstIntersectionManager.isFree()) {
+        
                 ExplorerManager nextExplorer = simulation.getNextExplorer();
                 if (nextExplorer != null) {
-                    System.out.println(nextExplorer);
+
                     nextExplorer.setBlockManager(firstIntersectionManager);
                     firstIntersectionManager.enter(nextExplorer);
 
@@ -203,12 +232,19 @@ public class MainGUI extends JFrame implements Runnable {
             valueTreasures = simulation.getTreasures().size();
             valueExplorers = simulation.getExplorers().size();
             updateScore();
+            int j = 1;
+            for(int i = 0; i < simulation.getExplorers().size(); i++) {
+                Explorer explorer = simulation.getExplorers().get(i);
+                exploName[i].setText("Explorateur " + j);
+                valueLife[i].setText("" + explorer.getLife());
+                j++;
+            }
             // Tous les trésors récupérés et tous les explorateurs sont vivants
             if (valueTreasures == 0 && valueExplorers == initExplorers) {
                 GameConfiguration.NUMBER_TREASURES = 0;
                 endTreasures = initTreasures;
                 endExplorers = 0;
-                endGold = valueGold - initGold;            
+                endGold = valueGold - initGold;
                 this.dispose();
                 new EndGUI(strat, 0, endExplorers, endTreasures, endGold);
                 // Tous les explorateurs morts et aucun trésor n'a été récupéré
@@ -220,32 +256,9 @@ public class MainGUI extends JFrame implements Runnable {
                 this.dispose();
                 new EndGUI(strat, 1, endExplorers, endTreasures, endGold);
             }
-            // Des explorateurs sont morts et des trésors ont été récupérés
-//            else if(valueExplorers < initExplorers && valueTreasures < initTreasures && !move) {
-//                GameConfiguration.NUMBER_TREASURES = 0;
-//                this.dispose();
-//                endTreasures = initTreasures - valueTreasures;
-//                endExplorers = initExplorers - valueExplorers;
-//                endGold = valueGold - initGold;
-//                new EndGUI(strat, 2, endExplorers, endTreasures, endGold);
-//            }
-            // Tous les explorateurs sont morts mais ils ont récupéré des trésors
-//              else if(valueExplorers == 0 && valueTreasures < initTreasures && !move) {
-//                GameConfiguration.NUMBER_TREASURES = 0;
-//                endTreasures = initTreasures - valueTreasures;
-//                endExplorers = initExplorers;
-//                endGold = valueGold - initGold;
-//                this.dispose();
-//                new EndGUI(strat, 3, endExplorers, endTreasures, endGold);    
-            // Tous les trésors ont été récupérés mais des explorateurs sont morts
-//            } else if(valueTreasures == 0 && valueExplorers < initExplorers && !move) {
-//                GameConfiguration.NUMBER_TREASURES = 0;
-//                endTreasures = initTreasures;
-//                endExplorers = initExplorers - valueExplorers;
-//                endGold = valueGold - initGold;
-//                this.dispose();
-//                new EndGUI(strat, 4, endExplorers, endTreasures, endGold);                
-//            }
         }
+        
+        simulation.stopAllExplorers();
+        
     }
 }

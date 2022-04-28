@@ -1,7 +1,6 @@
 package strategy;
 
 import configuration.GameConfiguration;
-import element.Animal;
 import element.Explorer;
 import element.Treasure;
 import gui.MainGUI;
@@ -16,18 +15,17 @@ import process.Simulation;
  */
 public class EquipmentStrategy extends Strategy {
 
-    private Map map;
     private Explorer explorer;
     private Simulation simulation;
 
     public EquipmentStrategy(Map map, Explorer explorer, Simulation simulation) {
-        this.map = map;
         this.explorer = explorer;
         this.simulation = simulation;
     }
 
     /**
      * Remove or add, treasure depend of the explorer's position.
+     * 
      * @see Simulation belongTo(Intersection,ArrayList<Intersection>)
      * @param position Explorer's position
      * @param treasure
@@ -51,6 +49,7 @@ public class EquipmentStrategy extends Strategy {
     /**
      * Compare explorer's position and treasure's position to decide in which
      * orientation explorer move.
+     * 
      * @param position Explorer's position
      * @param treasure
      * @return newPosition The new explorer's position
@@ -71,28 +70,7 @@ public class EquipmentStrategy extends Strategy {
             newOrdonnee = position.getOrdonnee() + GameConfiguration.BLOCK_SIZE;
         }
 
-//		Intersection result = new Intersection(newAbscisse,newOrdonnee);
-//		
-//		while(isOccupiedByExplorer(result)) {
-//			double percent = Math.random();
-//            if (percent <= 0.25) {
-//            	result = map.getElementPosition(position.getAbscisse(), position.getOrdonnee() + GameConfiguration.BLOCK_SIZE);
-//            } else if (percent > 0.25 && percent <= 0.50) {
-//            	result = map.getElementPosition(position.getAbscisse(), position.getOrdonnee() - GameConfiguration.BLOCK_SIZE);
-//            } else if (percent > 0.50 && percent <= 0.75) {
-//            	result = map.getElementPosition(position.getAbscisse() + GameConfiguration.BLOCK_SIZE, position.getOrdonnee());
-//            } else {
-//            	result = map.getElementPosition(position.getAbscisse() - GameConfiguration.BLOCK_SIZE, position.getOrdonnee());
-//            }
-//		}
         return new Intersection(newAbscisse, newOrdonnee);
     }
 
-//    public boolean isOccupiedByExplorer(Intersection find) {   	
-//		ArrayList<Intersection> explorerIntersection = new ArrayList<Intersection>();
-//		for(Explorer explorer: simulation.getExplorers()) {			
-//			explorerIntersection.add(explorer.getPosition());
-//		}
-//		return simulation.belongTo(find, explorerIntersection);
-//    }
 }
